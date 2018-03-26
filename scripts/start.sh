@@ -28,6 +28,9 @@ function check_config() {
     echo "${1}: " ${!1}
   fi
 }
+# tbds-env
+export HADOOP_HOME=/usr/hdp/2.2.0.0-2041/hadoop
+export SPARK_HOME=/usr/hdp/2.2.0.0-2041/spark
 
 # Save project root dir
 script_path=`which $0`

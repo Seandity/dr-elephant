@@ -21,8 +21,8 @@ function print_usage(){
 }
 
 function play_command() {
-  if type activator 2>/dev/null; then
-    activator "$@"
+  if type /home/jiahuilliu/data/activator-dist-1.3.12/bin/activator 2>/dev/null; then
+    /home/jiahuilliu/data/activator-dist-1.3.12/bin/activator "$@"
   else
     play "$@"
   fi
@@ -126,7 +126,7 @@ app_conf=${project_root}/app-conf
 rm -rf ${project_root}/dist
 mkdir dist
 
-play_command $OPTS clean test compile dist
+play_command $OPTS clean compile dist
 
 cd target/universal
 
