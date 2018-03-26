@@ -101,7 +101,7 @@ class SparkFSFetcher(fetcherConfData: FetcherConfigurationData) extends Elephant
                           " withlogPath: " + eventLogPath +
                           " with codec:" + eventLogCodec)
 
-      sparkUtils.withEventLog(eventLogFileSystem, eventLogPath, eventLogCodec) { in =>
+      sparkUtils.withEventLog(eventLogFileSystem, eventLogPath, None) { in =>
         dataCollection.load(in, eventLogPath.toString())
       }
 

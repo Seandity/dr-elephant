@@ -70,7 +70,7 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
     if (Boolean.valueOf(configuration.get(IS_RM_HA_ENABLED))) {
       String resourceManagers = configuration.get(RESOURCE_MANAGER_IDS);
       if (resourceManagers != null) {
-        logger.info("The list of RM IDs are " + resourceManagers);
+        logger.info("The list of RM IDs are " + resourceManagers+" (HA)");
         List<String> ids = Arrays.asList(resourceManagers.split(","));
         _currentTime = System.currentTimeMillis();
         updateAuthToken();
@@ -78,7 +78,7 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
           try {
             String resourceManager = configuration.get(RESOURCE_MANAGER_ADDRESS + "." + id);
             String resourceManagerURL = String.format(RM_NODE_STATE_URL, resourceManager);
-            logger.info("Checking RM URL: " + resourceManagerURL);
+            //logger.info("Checking RM URL: " + resourceManagerURL);
             JsonNode rootNode = readJsonNode(new URL(resourceManagerURL));
             String status = rootNode.path("clusterInfo").path("haState").getValueAsText();
             if (status.equals("ACTIVE")) {
@@ -142,7 +142,7 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
     URL succeededAppsURL = new URL(new URL("http://" + _resourceManagerAddress), String.format(
             "/ws/v1/cluster/apps?finalStatus=SUCCEEDED&finishedTimeBegin=%s&finishedTimeEnd=%s",
             String.valueOf(_lastTime + 1), String.valueOf(_currentTime)));
-    logger.info("The succeeded apps URL is " + succeededAppsURL);
+    logger.info("succeeded apps URL is " + succeededAppsURL);
     List<AnalyticJob> succeededApps = readApps(succeededAppsURL);
     appList.addAll(succeededApps);
 
@@ -152,8 +152,8 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
     URL failedAppsURL = new URL(new URL("http://" + _resourceManagerAddress), String.format(
         "/ws/v1/cluster/apps?finalStatus=FAILED&state=FINISHED&finishedTimeBegin=%s&finishedTimeEnd=%s",
         String.valueOf(_lastTime + 1), String.valueOf(_currentTime)));
+    logger.info("failed apps URL is " + failedAppsURL);
     List<AnalyticJob> failedApps = readApps(failedAppsURL);
-    logger.info("The failed apps URL is " + failedAppsURL);
     appList.addAll(failedApps);
 
     // Append promises from the retry queue at the end of the list
@@ -228,6 +228,7 @@ public class AnalyticJobGeneratorHadoop2 implements AnalyticJobGenerator {
 
     JsonNode rootNode = readJsonNode(url);
     JsonNode apps = rootNode.path("apps").path("app");
+    logger.info(apps.size());
 
     for (JsonNode app : apps) {
       String appId = app.get("id").getValueAsText();

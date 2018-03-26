@@ -75,12 +75,12 @@ public class MapReduceFSFetcherHadoop2 extends MapReduceFetcher {
     super(fetcherConfData);
 
     _maxLogSizeInMB = DEFALUT_MAX_LOG_SIZE_IN_MB;
-    if (fetcherConfData.getParamMap().get(LOG_SIZE_XML_FIELD) != null) {
+    /*if (fetcherConfData.getParamMap().get(LOG_SIZE_XML_FIELD) != null) {
       double[] logLimitSize = Utils.getParam(fetcherConfData.getParamMap().get(LOG_SIZE_XML_FIELD), 1);
       if (logLimitSize != null) {
         _maxLogSizeInMB = logLimitSize[0];
       }
-    }
+    }*/
     logger.info("The history log limit of MapReduce application is set to " + _maxLogSizeInMB + " MB");
 
     String timeZoneStr = fetcherConfData.getParamMap().get(HISTORY_SERVER_TIME_ZONE_XML_FIELD);

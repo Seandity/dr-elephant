@@ -37,7 +37,7 @@ public class Global extends GlobalSettings {
   public void onStart(Application app) {
     Logger.info("Starting Application...");
 
-    fixJavaKerberos();
+    //fixJavaKerberos();
 
     try {
       _drElephant = new DrElephant();
@@ -62,7 +62,7 @@ public class Global extends GlobalSettings {
    * at com.sun.security.sasl.util.AbstractSaslImpl.traceOutput(AbstractSaslImpl.java:241)
    * at com.sun.security.sasl.gsskerb.GssKrb5Client.evaluateChallenge(GssKrb5Client.java:180)
    */
-  private static void fixJavaKerberos() {
+  /*private static void fixJavaKerberos() {
     try {
       Field loggerField = AbstractSaslImpl.class.getDeclaredField("logger");
       loggerField.setAccessible(true);
@@ -86,5 +86,5 @@ public class Global extends GlobalSettings {
     modifiersField.setAccessible(true);
     modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
     field.set(null, newValue);
-  }
+  }*/
 }

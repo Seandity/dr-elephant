@@ -99,9 +99,10 @@ public class ElephantRunner implements Runnable {
         @Override
         public Void run() {
           HDFSContext.load();
+          ElephantContext.init();
+
           loadGeneralConfiguration();
           loadAnalyticJobGenerator();
-          ElephantContext.init();
 
           // Initialize the metrics registries.
           MetricsController.init();
@@ -115,6 +116,7 @@ public class ElephantRunner implements Runnable {
                   new LinkedBlockingQueue<Runnable>(), factory);
 
           while (_running.get() && !Thread.currentThread().isInterrupted()) {
+            logger.info("================FetchInterval = "+_fetchInterval+" ms================");
             _analyticJobGenerator.updateResourceManagerAddresses();
             lastRun = System.currentTimeMillis();
 
@@ -132,6 +134,7 @@ public class ElephantRunner implements Runnable {
             List<AnalyticJob> todos;
             try {
               todos = _analyticJobGenerator.fetchAnalyticJobs();
+              logger.info("newApplication Fetching size is "+todos.size());
             } catch (Exception e) {
               logger.error("Error fetching job list. Try again later...", e);
               //Wait for a while before retry
@@ -145,7 +148,7 @@ public class ElephantRunner implements Runnable {
 
             int queueSize = _threadPoolExecutor.getQueue().size();
             MetricsController.setQueueSize(queueSize);
-            logger.info("Job queue size is " + queueSize);
+            logger.info("current threadpool queue size is " + queueSize);
 
             //Wait for a while before next fetch
             waitInterval(_fetchInterval);

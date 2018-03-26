@@ -276,7 +276,7 @@ trait SparkUtils {
 
       // This should be reached only if we can't parse the filename in the path.
       // Try to construct a general path in that case.
-      case _ => (new Path(base + "/" + appId + "." + DEFAULT_COMPRESSION_CODEC), DEFAULT_COMPRESSION_CODEC)
+      case _ => (attemptsList(0).getPath(), DEFAULT_COMPRESSION_CODEC)
     }
   }
 

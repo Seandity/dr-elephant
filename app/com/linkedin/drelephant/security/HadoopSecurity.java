@@ -33,9 +33,9 @@ public class HadoopSecurity {
 
   private UserGroupInformation _loginUser = null;
 
-  private String _keytabLocation;
+  /*private String _keytabLocation;
   private String _keytabUser;
-  private boolean _securityEnabled = false;
+  private boolean _securityEnabled = false;*/
 
 
   private static HadoopSecurity instance = null;
@@ -51,7 +51,7 @@ public class HadoopSecurity {
   private HadoopSecurity() throws IOException {
     Configuration conf = new Configuration();
     UserGroupInformation.setConfiguration(conf);
-    _securityEnabled = UserGroupInformation.isSecurityEnabled();
+    /*_securityEnabled = UserGroupInformation.isSecurityEnabled();
     if (_securityEnabled) {
       logger.info("This cluster is Kerberos enabled.");
       boolean login = true;
@@ -76,7 +76,7 @@ public class HadoopSecurity {
       }
 
       checkLogin();
-    }
+    }*/
   }
 
   public UserGroupInformation getUGI() throws IOException {
@@ -87,20 +87,24 @@ public class HadoopSecurity {
   public void checkLogin() throws IOException {
 
     if (_loginUser == null) {
-      logger.info("No login user. Creating login user");
-      logger.info("Logging with " + _keytabUser + " and " + _keytabLocation);
-      UserGroupInformation.loginUserFromKeytab(_keytabUser, _keytabLocation);
+      //logger.info("No login user. Creating login user");
+      //logger.info("Logging with " + _keytabUser + " and " + _keytabLocation);
+      //UserGroupInformation.loginUserFromKeytab(_keytabUser, _keytabLocation);
       _loginUser = UserGroupInformation.getLoginUser();
-      logger.info("Logged in with user " + _loginUser);
-      if(UserGroupInformation.isLoginKeytabBased()) {
+      logger.info("No login user. Creating login user Logged in with user " + _loginUser);
+      /*if(UserGroupInformation.isLoginKeytabBased()) {
         logger.info("Login is keytab based");
       } else {
         logger.info("Login is not keytab based");
       }
     } else {
       _loginUser.checkTGTAndReloginFromKeytab();
-    }
+    }*/
 
+    }
+    else {
+      logger.info("Logged in with user " + _loginUser);
+    }
   }
 
   public <T> T doAs(PrivilegedAction<T> action) throws IOException {

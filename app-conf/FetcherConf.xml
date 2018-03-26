@@ -58,7 +58,8 @@
     <params>
       <sampling_enabled>false</sampling_enabled>
       <history_log_size_limit_in_mb>500</history_log_size_limit_in_mb>
-      <history_server_time_zone>PST</history_server_time_zone>
+      <!--<history_server_time_zone>PST</history_server_time_zone>-->
+      <history_server_time_zone>GMT+08:00</history_server_time_zone>
     </params>
   </fetcher>
   
@@ -82,6 +83,10 @@
   <fetcher>
     <applicationtype>spark</applicationtype>
     <classname>com.linkedin.drelephant.spark.fetchers.FSFetcher</classname>
+    <params>
+      <event_log_size_limit_in_mb>500</event_log_size_limit_in_mb>
+      <event_log_location_uri>hdfs://hdfsCluster/user/spark/event-logs</event_log_location_uri>
+    </params>
   </fetcher>
 
   <!--

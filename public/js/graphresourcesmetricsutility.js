@@ -98,7 +98,7 @@ function plotter(graphData, jobDefList) {
             if((d/(1024*3600))>100.0) {
                 return d3.round(d/(1024*3600),0);        // convert to GB Hours with 0 decimal places for large numbers
             } else {
-                return d3.round(d/(1024*3600),2);       // convert to GB Hours with 2 decimal places for small numbers
+                return d3.round(d/(1024*3600),4);       // convert to GB Hours with 2 decimal places for small numbers
             }
         })
         .orient("left");
