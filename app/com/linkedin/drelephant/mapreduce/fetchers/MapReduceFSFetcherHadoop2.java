@@ -85,7 +85,6 @@ public class MapReduceFSFetcherHadoop2 extends MapReduceFetcher {
 
     String timeZoneStr = fetcherConfData.getParamMap().get(HISTORY_SERVER_TIME_ZONE_XML_FIELD);
     _timeZone = timeZoneStr == null ? TimeZone.getDefault() : TimeZone.getTimeZone(timeZoneStr);
-    logger.info("Using timezone: " + _timeZone.getID());
 
     Configuration conf = new Configuration();
     this._historyLocation = conf.get("mapreduce.jobhistory.done-dir");
@@ -96,8 +95,8 @@ public class MapReduceFSFetcherHadoop2 extends MapReduceFetcher {
     } catch( URISyntaxException ex) {
       this._fs = FileSystem.get(conf);
     }
-    logger.info("Intermediate history dir: " + _intermediateHistoryLocation);
-    logger.info("History done dir: " + _historyLocation);
+    logger.info("History done dir: " + _historyLocation + " & Intermediate history dir: " +
+            _intermediateHistoryLocation + " & Using timezone: " + _timeZone.getID());
   }
 
   public String getHistoryLocation() {

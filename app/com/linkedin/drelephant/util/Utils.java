@@ -81,14 +81,13 @@ public final class Utils {
    */
   public static Document loadXMLDoc(String filePath) {
     InputStream instream = null;
-    logger.info("Loading configuration file " + filePath);
     instream = ClassLoader.getSystemClassLoader().getResourceAsStream(filePath);
 
     if (instream == null) {
       logger.info("Configuation file not present in classpath. File:  " + filePath);
       throw new RuntimeException("Unable to read " + filePath);
     }
-    logger.info("Configuation file loaded. File: " + filePath);
+    logger.info("Loaded  configuration file " + filePath);
 
     Document document = null;
     try {

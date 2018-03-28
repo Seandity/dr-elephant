@@ -64,7 +64,7 @@ class SparkFSFetcher(fetcherConfData: FetcherConfigurationData) extends Elephant
     val sparkConf = new SparkConf()
     sparkUtils.getDefaultPropertiesFile() match {
       case Some(filename) => sparkConf.setAll(sparkUtils.getPropertiesFromFile(filename))
-      case None => throw new IllegalStateException("can't find Spark conf; please set SPARK_HOME or SPARK_CONF_DIR")
+      case None => throw new IllegalStateException("can't find spark-defaults.conf")
     }
     sparkConf
   }
