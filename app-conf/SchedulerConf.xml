@@ -18,6 +18,11 @@
 <schedulers>
 
     <scheduler>
+        <name>lhotseflow</name>
+        <classname>com.linkedin.drelephant.schedulers.LhotseScheduler</classname>
+    </scheduler>
+
+    <scheduler>
         <name>airflow</name>
         <classname>com.linkedin.drelephant.schedulers.AirflowScheduler</classname>
         <params>
