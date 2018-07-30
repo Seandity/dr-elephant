@@ -178,14 +178,28 @@ class SparkDataCollection extends SparkApplicationData {
         info.memUsed = storageStatusTrackingListener.executorIdToMaxUsedMem.getOrElse(info.execId, 0L)
         info.maxMem = status.maxMem
         info.diskUsed = status.diskUsed
-        info.activeTasks = executorsListener.executorToTaskSummary(info.execId).tasksActive
-        info.failedTasks = executorsListener.executorToTaskSummary(info.execId).tasksFailed
-        info.completedTasks = executorsListener.executorToTaskSummary(info.execId).tasksComplete
-        info.totalTasks = info.activeTasks + info.failedTasks + info.completedTasks
-        info.duration = executorsListener.executorToTaskSummary(info.execId).duration
-        info.inputBytes = executorsListener.executorToTaskSummary(info.execId).inputBytes
-        info.shuffleRead = executorsListener.executorToTaskSummary(info.execId).shuffleRead
-        info.shuffleWrite = executorsListener.executorToTaskSummary(info.execId).shuffleWrite
+
+        val taskSummary = executorsListener.executorToTaskSummary.get(info.execId)
+
+        if (taskSummary.nonEmpty) {
+          info.activeTasks = taskSummary.get.tasksActive
+          info.failedTasks = taskSummary.get.tasksFailed
+          info.completedTasks = taskSummary.get.tasksComplete
+          info.totalTasks = info.activeTasks + info.failedTasks + info.completedTasks
+          info.duration = taskSummary.get.duration
+          info.inputBytes = taskSummary.get.inputBytes
+          info.shuffleRead = taskSummary.get.shuffleRead
+          info.shuffleWrite = taskSummary.get.shuffleWrite
+        }else{
+          info.activeTasks = 0
+          info.failedTasks = 0
+          info.completedTasks = 0
+          info.totalTasks = 0
+          info.duration = 0
+          info.inputBytes = 0
+          info.shuffleRead = 0
+          info.shuffleWrite = 0
+        }
 
         _executorData.setExecutorInfo(info.execId, info)
       }
@@ -295,7 +309,14 @@ class SparkDataCollection extends SparkApplicationData {
     replayBus.addListener(executorsListener)
     replayBus.addListener(storageListener)
     replayBus.addListener(storageStatusTrackingListener)
-    replayBus.replay(in, sourceName, maybeTruncated = false)
+    //replayBus.replay(in, sourceName, maybeTruncated = false)
+    replayBus.replay(in, sourceName, maybeTruncated = false, {(eventString: String) => {
+      if (eventString.contains("\"Event\":\"org.apache.spark.sql.execution.ui.")){
+        false
+      }else{
+        true
+      }}}
+    )
   }
 }
 

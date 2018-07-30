@@ -258,8 +258,9 @@ trait SparkUtils {
                         sortWith( (x,y) => x._2.getOrElse("-1").toInt > y._2.getOrElse("-1").toInt ).
                         head
     }
+    (attemptsList(0).getPath(), DEFAULT_COMPRESSION_CODEC)
 
-    finalAttempt match {
+    /*finalAttempt match {
       // if attemptId is none and the codec is available, use the appid with no attemptid suffix
       case noAttempt if noAttempt._1 != None & noAttempt._2 == None & noAttempt._3 != None =>
                                                           (new Path(base +
@@ -277,7 +278,7 @@ trait SparkUtils {
       // This should be reached only if we can't parse the filename in the path.
       // Try to construct a general path in that case.
       case _ => (attemptsList(0).getPath(), DEFAULT_COMPRESSION_CODEC)
-    }
+    }*/
   }
 
   private def getLogPath(
